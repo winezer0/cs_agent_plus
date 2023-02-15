@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Premain-Class: cs_agent.PreMain
+Can-Retransform-Classes: true
+Can-Redefine-Classes: true
