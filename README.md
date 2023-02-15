@@ -84,7 +84,47 @@ src 项目源码文件夹
 bin 历史发布jar包文件夹
 cs_agent.jar 实际使用的jar文件
 cs_agent.ini cs_agent.jar的配置文件,不存在会自动生成
+```
 
+
+
+三、在启动命令行添加agent运行
+
+```
+config.ini 配置文件
+不存在会在运行时自动生成
+如果更新版本建议删除后重新生成
+
+1、生成默认配置文件config.ini 
+-javaagent:cs_agent.jar
+
+2、生成自定义配置文件名称custom.ini 
+-javaagent:cs_agent.jar=custom.ini
+
+命令实例：
+
+客户端启动（默认配置文件名称config.ini）::
+java -XX:ParallelGCThreads=4 -XX:+AggressiveHeap -XX:+UseParallelGC -Xms512M -Xmx1024M -Dfile.encoding=UTF-8 -javaagent:cs_agent.jar -jar cobaltstrike.jar %*
+
+客户端启动（自定义配置文件名称custom.ini）:
+java -XX:ParallelGCThreads=4 -XX:+AggressiveHeap -XX:+UseParallelGC -Xms512M -Xmx1024M -Dfile.encoding=UTF-8 -javaagent:cs_agent.jar=custom.ini -jar cobaltstrike.jar %*
+
+注：服务端也可以使用该agent进行漏洞修复|agent调试绕过等操作.
+
+命令实例：（仅最后一行）：
+
+服务端启动（默认配置文件名称config.ini）::
+java -XX:ParallelGCThreads=4 -XX:+AggressiveHeap -XX:+UseParallelGC -Xms512M -Xmx1024M -Djavax.net.ssl.keyStore=./default.store -Djavax.net.ssl.keyStorePassword=123456 -Dcobaltstrike.server_port=55555 -javaagent:cs_agent.jar -server -classpath ./cobaltstrike.jar server.TeamServer %* 
+
+服务端启动（自定义配置文件名称custom.ini）::
+java -XX:ParallelGCThreads=4 -XX:+AggressiveHeap -XX:+UseParallelGC -Xms512M -Xmx1024M -Djavax.net.ssl.keyStore=./default.store -Djavax.net.ssl.keyStorePassword=123456 -Dcobaltstrike.server_port=55555 -javaagent:cs_agent.jar=custom.ini -server -classpath ./cobaltstrike.jar server.TeamServer %*
+```
+
+
+
+三、根据需求配置config.ini
+
+```
 cs_agent.ini配置说明：
 attrib.cs_version=4.5  ->指定CS版本号,不同版本key不相同
 beacon.sleeved.key=Auto ->Auto表示根据版本号自动获取，不同版本值不相同
@@ -102,16 +142,7 @@ need.crack_auth=Y  ->CS agent破解,Y开启，N关闭
 need.fix_xss_rce=Y  ->修复XSS RCE,Y开启，N关闭
 need.translation=N  ->汉化翻译功能,Y开启，N关闭
 
-
-```
-
-二、根据需求配置config.ini
-
-```
-1、使用默认配置文件config.ini 【-javaagent:cs_agent.jar】
-
-2、使用自定义配置文件名称custom.ini 【-javaagent:cs_agent.jar=custom.ini】
-
+修改后需要重新启动cs程序
 ```
 
 
